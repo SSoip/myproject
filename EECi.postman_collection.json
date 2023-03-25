@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "1016278c-577f-4684-bdce-195098122070",
+		"name": "EECi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10737807"
+	},
+	"item": [
+		{
+			"name": "add_new_meter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let request_body = {\r",
+							"    \"name\":data.name,\r",
+							"    \"zone\":data.zone,\r",
+							"    \"unit\":data.unit,\r",
+							"    \"type\":data.type,\r",
+							"    \"first_time_operation\":\"today\",\r",
+							"    \"serial_number\":data.serial_number,\r",
+							"    \"first_time_installation\":\"today\",\r",
+							"    \"import_start_number\":data.import_start_number,\r",
+							"    \"export_start_number\":data.export_start_number,\r",
+							"    \"status\":\"activated\"\r",
+							"}\r",
+							"\r",
+							"function GetToday(){\r",
+							"    let date = new Date().toJSON();\r",
+							"    console.log(date);\r",
+							"    return date\r",
+							"}\r",
+							"request_body.first_time_operation = GetToday()\r",
+							"request_body.first_time_installation = GetToday()\r",
+							"console.log(request_body)\r",
+							"\r",
+							"// function setRequestData(){\r",
+							"    \r",
+							"\r",
+							"// }"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,61 @@
+login_page:
+  email_textbox: 
+    locator: //input[@id="email"]
+  pass_textbox: 
+    locator: //input[@id="password"]
+  signin_btn:   
+    locator:  //button[@id="submit"]
+  auction_btn:
+    locator: //*[@id="testid-btn-auction-sidebar"]
+  auction_title:
+    locator: //*[@id="testid-header-forTradingPeriod"]
+  placebid_btn:
+    locator: //*[@id="testid-button-auction"]
+auction_page:
+  buy:
+    highest_off:
+      locator: //*[@id="testid-label-highestOffPeak"]
+    highest_on:
+      locator: //*[@id="testid-label-highestOnPeak"]
+  auction_menu: 
+    locator: //*[@id="testid-btn-auction-sidebar"]
+  auction_icon:
+    locator: //*[@id="testid-svg-auction-sidebar"]
+  group_name:
+    locator: //*[@id="testid-value-groupName"]
+  group_title:
+    locator: //*[@id="testid-header-group"]
+  group_dropdown:
+    locator: //*[@class="ant-select-selection__rendered"]
+  group_list:
+    locator: /html/body/div[3]/div/div
+  contract_type:
+   locator: //*[@title="buy"]
+  meter_list:
+    locator: //*[@class="meter-button-wrapper"]/button[@type="button"]
+  meter_name:
+    locator: //*[@id="testid-value-meterName"]
+  latest_bid:
+    locator: //*[@class="bidding_history"]
+  placebid_btn:
+    locator: //*[@id="testid-button-auction"]
+  onpeak_price:
+    locator: //*[@id="testid-label-onpeak"]
+  onpeak:
+      locator: //*[@id="testid-text-onpeak-error"]
+  remark:
+    locator: //*[@id="testid-label-TOUPrice"]
+  renewable:
+    locator: //*[@id="testid-header-reMarketPrice"]
+  countdown:
+    locator: //*[@class="countdown-metric"]
+  offpeak:
+    offpeak_tab:
+      locator: //*[@id="root"]/div/div/div[2]/div/div[2]/div/div[2]/div[1]/div[2]/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/label[2]
+    offpeak_price:
+      locator: //*[@id="testid-label-offpeak"]
+    offpeak_atleast: 
+      locator: //*[@id="testid-text-offpeak-error"]
+summary_buy:
+  period_dropdown:
+    locator: //*[@id="testid-selector-period"]

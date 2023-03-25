@@ -1,0 +1,6669 @@
+{
+	"info": {
+		"_postman_id": "0762c8fb-a07b-4164-8890-05a8fac45b11",
+		"name": "Tenant_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10737807"
+	},
+	"item": [
+		{
+			"name": "create tenant_01_case : Pass",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}' + ' Co.,Ltd');\r",
+							"\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,    //เป็นภาษาไทย แต่หลังบ้านรับได้ทั้ง EN-TH หน้าบ้านจะยังแสดงถูก แต่ถ้าแก้จากหน้าบ้านจะไม่สามารถใส่ EN ได้ และมี Alert msg\r",
+							"    \"zoneId\" : 1\r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 01\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request success and Got CODE 201 Response\"] = pm.response.code == 201 ;\r",
+							"\r",
+							"tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;  //ได้ออกมาไม่ตรงตามที่เรา expect ไว้\r",
+							"\r",
+							"tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// console.log(requestbody);\r",
+							"console.log(resultBody.company.nameEn);\r",
+							"console.log(resultBody.company.nameTh);\r",
+							"console.log(resultBody.zone.id);\r",
+							"console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User can create tenant success when input valid data in mandatory fields completely."
+			},
+			"response": [
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_02_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"\"\r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 02\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when not input zoneID."
+			},
+			"response": [
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_03_case : Fail-------error",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 7\r",
+							"}\r",
+							"\r",
+							"// request_body.zoneId = 7 ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 03\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input out of list data for zoneId field.\r\n\r\n***case fail นี้ ขอยังไม่เทสน้า เนื่องจากเป็น case ที่ dev กำลัง fix อยู่"
+			},
+			"response": [
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_04_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"AB\" \r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 04\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							"// ถ้าขึ้นว่า หา nameEn ไม่เจอ คือ เราไปเรียกมันออกมาโชว์ แต่ไม่มีค่านั้น เนื่องจาก ส่งค่าไม่ไป\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input invalid data in zoneId field."
+			},
+			"response": [
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_05_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 05\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input data in mandatory field incompletely."
+			},
+			"response": [
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_06_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"\" \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 06\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input data in mandatory field incompletely."
+			},
+			"response": [
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_07_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 07\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input data in mandatory field incompletely."
+			},
+			"response": [
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_08_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 08\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input data in mandatory field incompletely."
+			},
+			"response": [
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_09_case : Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : \"\" \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 09\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail \"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input data in mandatory field incompletely."
+			},
+			"response": [
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				},
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "create tenant_10_case : Fail Duplicate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"Texas\",   //ชื่อซ้ำ\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 1\r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----case no. 10\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"// pm.collectionVariables.set(\"tenant_id\",resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == \"Texas\" ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User cannot create tenant when input duplicated data in tenant name."
+			},
+			"response": [
+				{
+					"name": "create destination success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Ser\",\n    \"nameTh\": \"เซอ\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"c2-jP7+XS5Hd0Gi4aTumrz9mWoNB1I\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "194"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:17:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 282,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:17:29.723Z\",\n    \"updatedAt\": \"2020-10-19T09:17:29.723Z\",\n    \"Company\": {\n        \"id\": 282,\n        \"nameEn\": \"Ser\",\n        \"nameTh\": \"เซอ\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"78-KEbypIbKnRgkX0UORN+QEyp9lcE\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn field is required.\",\n        \"zoneId\": \"The zoneId field is required.\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"sertis\",\n    \"nameTh\": \"เซอติส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"ce-gAU8XH2bV6TPCBwGNGpKGh+sEtk\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "206"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:15:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 281,\n    \"available\": true,\n    \"createdAt\": \"2020-10-19T09:15:07.831Z\",\n    \"updatedAt\": \"2020-10-19T09:15:07.831Z\",\n    \"Company\": {\n        \"id\": 281,\n        \"nameEn\": \"sertis\",\n        \"nameTh\": \"เซอติส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "create destination fail when body is invalid type",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": 1,\n    \"nameTh\": 1,\n    \"zoneId\": \"as\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"a0-69T7/X1V2xZ/GN0qOJRxPnksn9Q\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:16:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Validation error\",\n    \"errors\": {\n        \"nameEn\": \"The nameEn must be a string.\",\n        \"nameTh\": \"The nameTh must be a string.\",\n        \"zoneId\": \"The zoneId must be an integer.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_01_case : Pass",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomCity}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"// var number_rand = pm.collectionVariables.replaceIn('{{$randomInt}}');\r",
+							"// var symbol_rand = pm.collectionVariables.replaceIn('{{$randomCurrencySymbol}}');\r",
+							"// var tenantname = letter_rand + number_rand + symbol_rand ;\r",
+							"\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",\"\");\r",
+							"// pm.collectionVariables.set(\"nameTh\",\"\");\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request success and Got CODE 200 Response\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can edit data to update tenant detail when input data in mandatory field completely."
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_02_case: Pass",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"\"\r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"tests[\"Expect result Zone id\"] = requestbody.zoneId != resultBody.zone.id;\r",
+							"\r",
+							"// console.log(requestbody);\r",
+							"console.log(resultBody.company.nameEn);\r",
+							"console.log(resultBody.company.nameTh);\r",
+							"console.log(resultBody.zone.id);\r",
+							"console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_03_case: Fail-----ERROR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 20 \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User cannot update tenant detail when edit zoneId out of list.\r\ncase fail นี้ ขอยังไม่เทสน้า เนื่องจากเป็น case ที่ dev กำลัง fix อยู่"
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_04_case: Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"AB\" \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User cannot edit to update tenant detail when edit to input invalid data of zoneId field."
+			},
+			"response": [
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_05_case: Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_06_case: Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : \"\" \r",
+							"}\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_07_case: Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_08_case: Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"\",\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : 1 \r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_09_case: Pass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request Fail\"] = pm.response.code == 200 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : tenantname,\r",
+							"    \"nameTh\" : \"\",\r",
+							"    \"zoneId\" : \"\" \r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can update tenant detail success when not edit old data."
+			},
+			"response": [
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update tenant_10_case: Fail Duplicate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var tenantname = pm.collectionVariables.replaceIn('{{$randomProductName}}' + '{{$randomInt}}' + '{{$randomCurrencySymbol}}');\r",
+							"console.log(\"Set data success\");\r",
+							"// pm.collectionVariables.set(\"nameEn\",name_rand);\r",
+							"// pm.collectionVariables.set(\"nameTh\",name_rand);\r",
+							"// pm.collectionVariables.set(\"zoneId\",\"xxx\");\r",
+							"\r",
+							"var request_body = {\r",
+							"    \"nameEn\" : \"Texas\",   //ชื่อซ้ำ\r",
+							"    \"nameTh\" : tenantname,\r",
+							"    \"zoneId\" : 1\r",
+							"}\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"var request_str = JSON.stringify(request_body);\r",
+							"pm.collectionVariables.set(\"testbody\",request_str);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"// console.log(resultBody.id); \r",
+							"// console.log(resultBody.available);\r",
+							"// console.log(resultBody.createdAt);\r",
+							"\r",
+							"pm.collectionVariables.get(resultBody.id);\r",
+							"\r",
+							"console.log(JSON.parse(request.data));\r",
+							"\r",
+							"var requestbody = JSON.parse(request.data); \r",
+							"\r",
+							"tests[\"Request success and Got CODE 201 Response\"] = pm.response.code == 400 ;\r",
+							"\r",
+							"// tests[\"Expect result Name En\"] = requestbody.nameEn == resultBody.company.nameEn ;\r",
+							"\r",
+							"// tests[\"Expect result Name Th\"] = requestbody.nameTh == resultBody.company.nameTh ;\r",
+							"\r",
+							"// tests[\"Expect result Zone id\"] = requestbody.zoneId == resultBody.zone.id;\r",
+							"\r",
+							"// // console.log(requestbody);\r",
+							"// console.log(resultBody.company.nameEn);\r",
+							"// console.log(resultBody.company.nameTh);\r",
+							"// console.log(resultBody.zone.id);\r",
+							"// console.log(pm.response.code);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User cannot update tenant detail when edit to input duplicated data in tenant name."
+			},
+			"response": [
+				{
+					"name": "update destination by id fail",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"60-leyoRjhEP20kQviVlYPJV09TRmY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "96"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:43:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Duplicated value\",\n    \"errors\": {\n        \"nameEn\": \"Duplicated nameEn\",\n        \"nameTh\": \"Duplicated nameTh\"\n    }\n}"
+				},
+				{
+					"name": "update destination by id success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nameEn\": \"Com Fra\",\n    \"nameTh\": \"เฟเซอร์สส\",\n    \"zoneId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{frasers-staging}}/api/destinations/:id",
+							"host": [
+								"{{frasers-staging}}"
+							],
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{query_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d4-92rACcFrqRM9a6UaXsEHz20/qZ4\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:42:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": true,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "get tenant by id success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"\r",
+							"\r",
+							"var tenant = pm.collectionVariables.get(\"tenant_id\");\r",
+							"\r",
+							"tests[\"Request success and Got CODE 200 Response\"] = pm.response.code == 200 ;\r",
+							"console.log(pm.response.code);\r",
+							"tests[\"Tenant id is \" + tenant] = tenant == resultBody.id ;\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// console.log(\"Set data success\");\r",
+							"\r",
+							"// var request_body = {\r",
+							"//     \"id\" : 207 \r",
+							"// }\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"// var request_str = JSON.stringify(request_body);\r",
+							"// pm.collectionVariables.set(\"testbody\",request_str);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}",
+							"description": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can get list of tenant by id that in this case will use the lastest tenant id from update tenant completely."
+			},
+			"response": [
+				{
+					"name": "get destination by id not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "199"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"14-tZG267t8uVsaRmhZN5IJ7rxI3Ws\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "20"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:33:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"destination\": null\n}"
+				},
+				{
+					"name": "get destination by id success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "29"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"13a-nwt2Wxon88XWHsl/erd5/k/nAe8\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "314"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:34:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"destination\": {\n        \"id\": 29,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 29,\n            \"nameEn\": \"Leschaco (Thailand) Co., Ltd.\",\n            \"nameTh\": \"บริษัท เลสชาโก้ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 2,\n            \"name\": \"Zone B\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "delete tenant by id success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}"
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User can delete tenant by tenant id that in this case will use lastest id of previous case."
+			},
+			"response": [
+				{
+					"name": "delete destination by id success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d5-+YQeXWNzu2mz+l39UMqw9wLZHXc\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "213"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:44:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": false,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-19T09:44:45.528Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				},
+				{
+					"name": "delete destination by id not found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"4a-ogawvsjCRLdjPqyPnHIp+hlh5UY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:44:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Not found.\",\n    \"errors\": {\n        \"destination\": \"Destination is not found.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "get tenant by id fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"\r",
+							"\r",
+							"var tenant = pm.collectionVariables.get(\"tenant_id\");\r",
+							"\r",
+							"tests[\"Request success and Got CODE 404 Response\"] = pm.response.code == 404 ;\r",
+							"console.log(pm.response.code);\r",
+							"tests[\"Get Fail\"] = \"destination is not found\" == resultBody.errors.destination\r",
+							"console.log(\"This destination is not available in the system\");\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// console.log(\"Set data success\");\r",
+							"\r",
+							"// var request_body = {\r",
+							"//     \"id\" : 207 \r",
+							"// }\r",
+							"\r",
+							"// request_body.nameEn = \"New\" ;\r",
+							"\r",
+							"// var request_str = JSON.stringify(request_body);\r",
+							"// pm.collectionVariables.set(\"testbody\",request_str);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}",
+							"description": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User cannot get tenant to show when get tenant id that was deleted already."
+			},
+			"response": [
+				{
+					"name": "get destination by id success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "29"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"13a-nwt2Wxon88XWHsl/erd5/k/nAe8\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "314"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:34:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"destination\": {\n        \"id\": 29,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 29,\n            \"nameEn\": \"Leschaco (Thailand) Co., Ltd.\",\n            \"nameTh\": \"บริษัท เลสชาโก้ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 2,\n            \"name\": \"Zone B\"\n        }\n    }\n}"
+				},
+				{
+					"name": "get destination by id not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "199"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"14-tZG267t8uVsaRmhZN5IJ7rxI3Ws\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "20"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:33:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"destination\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "delete tenant fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{testbody}}"
+				},
+				"url": {
+					"raw": "{{frasers}}/api/destinations/:id",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{tenant_id}}"
+						}
+					]
+				},
+				"description": "User cannot delete tenant success when that tenant id was deleted already or unavailble in the system."
+			},
+			"response": [
+				{
+					"name": "delete destination by id not found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"4a-ogawvsjCRLdjPqyPnHIp+hlh5UY\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:44:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Not found.\",\n    \"errors\": {\n        \"destination\": \"Destination is not found.\"\n    }\n}"
+				},
+				{
+					"name": "delete destination by id success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"d5-+YQeXWNzu2mz+l39UMqw9wLZHXc\""
+						},
+						{
+							"key": "Content-Length",
+							"value": "213"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:44:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"available\": false,\n    \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n    \"updatedAt\": \"2020-10-19T09:44:45.528Z\",\n    \"Company\": {\n        \"id\": 1,\n        \"nameEn\": \"Com Fra\",\n        \"nameTh\": \"เฟเซอร์สส\"\n    },\n    \"Zone\": {\n        \"id\": 1,\n        \"name\": \"Zone A\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "get list all tenant success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resultBody = JSON.parse(responseBody); \r",
+							"console.log(\"----Print Result display----\");\r",
+							"console.log(resultBody);\r",
+							"\r",
+							"tests[\"Request success and Got CODE 200 Response\"] = pm.response.code == 200 ;\r",
+							"console.log(pm.response.code);\r",
+							"\r",
+							"\r",
+							"// var jsonData = JSON.parse(responseBody);\r",
+							"// var main_schema = {\r",
+							"//     \"type\":\"object\",\r",
+							"//     \"properties\":{\r",
+							"//         \"id\":{\"type\": \"number\"},\r",
+							"//         \"available\":{\"type\": \"boolean\"},\r",
+							"//         \"createdAt\":{\"type\": \"string\"},\r",
+							"//         \"updatedAt\":{\"type\": \"string\"},\r",
+							"//         \"company\":{\"type\": \"object\"},\r",
+							"//         \"zone\":{\"type\": \"object\"},\r",
+							"//     },\r",
+							"//     \"required\":[\"id\",\"available\",\"createdAt\",\"updatedAt\",\"company\",\"zone\"]\r",
+							"// }\r",
+							"// var company_schema = {\r",
+							"//     \"type\":\"object\",\r",
+							"//     \"properties\":{\r",
+							"//         \"id\":{\"type\": \"number\"},\r",
+							"//         \"nameEn\":{\"type\": \"string\"},\r",
+							"//         \"nameTh\":{\"type\": \"string\"},\r",
+							"//     },\r",
+							"//     \"required\":[\"id\",\"nameEn\",\"nameTh\"]\r",
+							"//     }\r",
+							"// var zone_schema = {\r",
+							"//     \"type\":\"object\",\r",
+							"//     \"properties\":{\r",
+							"//         \"id\":{\"type\": \"number\"},\r",
+							"//         \"name\":{\"type\": \"string\"},\r",
+							"//     },\r",
+							"//     \"required\":[\"id\",\"name\"]\r",
+							"//     } \r",
+							"\r",
+							"\r",
+							"// function schema_error_logger(target_json,valid_schema){\r",
+							"//     var error_result = tv4.validateMultiple(target_json, valid_schema);\r",
+							"//         console.log(error_result);\r",
+							"//         for (var i = 0 ; i < error_result.errors.length; i++){\r",
+							"//             console.log(error_result.errors[i].message+\" : \"+error_result.errors[i].dataPath ); //get key path from error\r",
+							"\r",
+							"// }}\r",
+							"// tests[\"Request success and Got CODE 200 Response\"] =  pm.response.code == 200;\r",
+							"// if(jsonData.length == 0){\r",
+							"//     console.log(\"THERE IS NO DATA\");\r",
+							"// }\r",
+							"// else{\r",
+							"//     for (var i = 0 ; i < jsonData.length; i++){\r",
+							"//         console.log(\"\\n\");\r",
+							"//         console.log(\"Data No: \"+i);\r",
+							"//         tests[\"Main_Schema of data \"+i+\" is OK\"] = tv4.validateMultiple(jsonData[i], main_schema).valid;\r",
+							"//         schema_error_logger(jsonData[i], main_schema);\r",
+							"//         tests[\"Company_Schema \"+i+\" is OK\"] = tv4.validateMultiple(jsonData[i].company, company_schema).valid;\r",
+							"//         schema_error_logger(jsonData[i].company, company_schema);\r",
+							"//         tests[\"Zone_Schema \"+i+\" is OK\"] = tv4.validateMultiple(jsonData[i].zone, zone_schema).valid;\r",
+							"//         schema_error_logger(jsonData[i].zone, zone_schema);\r",
+							"//     }\r",
+							"\r",
+							"// }"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{frasers}}/api/destinations",
+					"host": [
+						"{{frasers}}"
+					],
+					"path": [
+						"api",
+						"destinations"
+					]
+				},
+				"description": "User can get all list to show success when get all id that are available in the system"
+			},
+			"response": [
+				{
+					"name": "list all destination",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/destinations",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"destinations"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "ETag",
+							"value": "\"8ea-oUmBHNhs/0Pgeavjd+pPolXKB60\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 19 Oct 2020 09:14:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"available\": true,\n        \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n        \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n        \"Company\": {\n            \"id\": 1,\n            \"nameEn\": \"Company A\",\n            \"nameTh\": null\n        },\n        \"Zone\": {\n            \"id\": 1,\n            \"name\": \"Zone A\"\n        }\n    },\n    {\n        \"id\": 2,\n        \"available\": true,\n        \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n        \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n        \"Company\": {\n            \"id\": 2,\n            \"nameEn\": \"Company B\",\n            \"nameTh\": null\n        },\n        \"Zone\": {\n            \"id\": 2,\n            \"name\": \"Zone B\"\n        }\n    },\n    {\n        \"id\": 3,\n        \"available\": true,\n        \"createdAt\": \"2020-10-16T16:55:40.225Z\",\n        \"updatedAt\": \"2020-10-16T16:55:40.225Z\",\n        \"Company\": {\n            \"id\": 3,\n            \"nameEn\": \"Company C\",\n            \"nameTh\": null\n        },\n        \"Zone\": {\n            \"id\": 3,\n            \"name\": \"Zone C\"\n        }\n    },\n    {\n        \"id\": 29,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 29,\n            \"nameEn\": \"Leschaco (Thailand) Co., Ltd.\",\n            \"nameTh\": \"บริษัท เลสชาโก้ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 2,\n            \"name\": \"Zone B\"\n        }\n    },\n    {\n        \"id\": 115,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 115,\n            \"nameEn\": \"MIURA INDUSTRIES (THAILAND) CO.,LTD.\",\n            \"nameTh\": \"บริษัท มิอุระ อินดัสทรีส์ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 3,\n            \"name\": \"Zone C\"\n        }\n    },\n    {\n        \"id\": 4,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 4,\n            \"nameEn\": \"Nippon Express NEC Logistics (Thailand) Co., Ltd.\",\n            \"nameTh\": \"บริษัท นิปปอนเอ็กเพรสเอ็นอีซี โลจิสติกส์ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 1,\n            \"name\": \"Zone A\"\n        }\n    },\n    {\n        \"id\": 153,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 153,\n            \"nameEn\": \"SUZUYO DISTRIBUTION CENTER (THAILAND) LTD.\",\n            \"nameTh\": \"บริษัท ซูซูโย ดิสทริบิวชั่น เซ็นเตอร์ (ประเทศไทย) จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 7,\n            \"name\": \"Zone D\"\n        }\n    },\n    {\n        \"id\": 201,\n        \"available\": true,\n        \"createdAt\": \"2020-10-17T01:27:03.182Z\",\n        \"updatedAt\": \"2020-10-17T01:27:03.182Z\",\n        \"Company\": {\n            \"id\": 201,\n            \"nameEn\": \"Thaikin Manufacturing Co., Ltd.\",\n            \"nameTh\": \"บริษัท ไทยคิน แมนูแฟคเจอริ่ง จำกัด\"\n        },\n        \"Zone\": {\n            \"id\": 3,\n            \"name\": \"Zone C\"\n        }\n    }\n]"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "testbody",
+			"value": ""
+		},
+		{
+			"key": "tenant_id",
+			"value": ""
+		}
+	]
+}

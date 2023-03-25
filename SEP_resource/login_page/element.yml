@@ -1,0 +1,17 @@
+login_page:
+  email_textbox: 
+    locator: //input[@id="email"]
+  pass_textbox: 
+    locator: //input[@id="password"]
+  signin_btn:   
+    locator:  //button[@id="submit"]
+  error_msg_text:    
+    locator:  //*[@id="email_error"]
+  error_email_text:    
+    locator: //div[@id="email_error"]
+  error_password_text:    
+    locator: //div[@id="password_error"]
+  redirect_home:
+    locator: //*[@id="testid-btn-home-sidebar"]
+  profile_btn:
+    locator:  //*[@id="testid-btn-logout-sidebar"]

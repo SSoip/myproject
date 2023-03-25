@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "de2b15d3-ee5f-47f3-b3c6-e0c1bed135eb",
+		"name": "EVLP_QA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "update_cable_capacity (Pallm)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response_body = pm.response.json();\r",
+							"var jsonData = JSON.parse(responseBody)\r",
+							"\r",
+							"let pass_schema = {\r",
+							"    \"type\" : \"object\",\r",
+							"    \"properties\" : {\r",
+							"        \"schedule_id\" : {\r",
+							"            \"type\" : \"integer\"\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\" : [\"schedule_id\"]\r",
+							"}\r",
+							"\r",
+							"let fail_schema = {\r",
+							"    \"type\" : \"object\",\r",
+							"    \"properties\" : {\r",
+							"        \"statusCode\" : {\r",
+							"            \"type\" : \"integer\"\r",
+							"        },\r",
+							"        \"message\" : {\r",
+							"            \"type\" : [\"array\", \"string\"]\r",
+							"        },\r",
+							"        \"error\" : {\r",
+							"            \"type\" : \"string\"\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\" : [\"statusCode\",\"message\",\"error\"]\r",
+							"}\r",
+							"\r",
+							"function check_schema(case_no, schema) {\r",
+							"    pm.test(case_no + 'Schema is valid', function() {\r",
+							"        pm.expect(jsonData).to.have.jsonSchema(schema);//jsonData = JSON.parse(responseBody)\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"function validate_response() {\r",
+							"    if (data.expected_updated_cap_code === 201){\r",
+							"        console.log('Expect code =' +  data.expected_updated_cap_code)\r",
+							"        check_schema(data.case_no,pass_schema)\r",
+							"        tests['Case' + data.case_no + 'Expect Status code is' + data.expected_updated_cap_code] = data.expected_updated_cap_code === responseCode.code\r",
+							"    }\r",
+							"    else{\r",
+							"        console.log('Expect code =' +  data.expected_updated_cap_code)\r",
+							"        check_schema(data.case_no,fail_schema)\r",
+							"        tests['Case' + data.case_no + 'Expect Status code is' + data.expected_updated_cap_code] = data.expected_updated_cap_code === responseCode.code\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"validate_response()\r",
+							"console.log('End of' + \"---------- Case ----------\" + data.case_no);"
+						],
+						"type": "text/javascript",
+						"id": "27c74456-ef60-46a4-aebe-b37bb71e35f9"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log('Case no : '+ data.case_no)\r",
+							"var main_request_body = {\r",
+							"        \"station_id\": 96459013,\r",
+							"        \"charging_profile\": {\r",
+							"        \"start_date_time\":\"2021-02-15 07:30:00Z\",\r",
+							"        \"end_date_time\": \"2021-02-15 07:45:00Z\",\r",
+							"        \"charging_rate_unit\": \"kW\",\r",
+							"        \"limit\": 200.00\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"function addMins(mins) {\r",
+							"    let now = new Date() //GMT format\r",
+							"    let newDateObj = now.getTime() + mins*60000;  //convert to ml+minutes\r",
+							"    let date = new Date(now.setTime(newDateObj)).toISOString()  //date format\r",
+							"    console.log('Today is',date)\r",
+							"    return date;\r",
+							"    }\r",
+							"\r",
+							"function input_data_selector(input_data){\r",
+							"    switch(input_data) {\r",
+							"        case \"null\":\r",
+							"            return null\r",
+							"        case \"nokey\":\r",
+							"            break;\r",
+							"        case \"TRUE\":\r",
+							"            return true\r",
+							"        case \"string\" :\r",
+							"            return 'it is string'\r",
+							"        case \"float\":\r",
+							"            return 1.11\r",
+							"        case \"exist_int\":\r",
+							"            return 1\r",
+							"        case \"non_exist_int\":\r",
+							"            return 9999999\r",
+							"        default:\r",
+							"            return input_data\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"function setRequestData (station_id,charging_profile,start_date_time,end_date_time,charging_rate_unit,limit) {\r",
+							"    let request_body = main_request_body\r",
+							"    request_body.station_id = input_data_selector(station_id);\r",
+							"    if (charging_profile === \"send\"){\r",
+							"        request_body.charging_profile.start_date_time = input_time_selector(start_date_time)\r",
+							"        request_body.charging_profile.end_date_time = input_time_selector(end_date_time)\r",
+							"        request_body.charging_profile.charging_rate_unit = input_data_selector(charging_rate_unit)\r",
+							"        request_body.charging_profile.limit = input_data_selector(limit)\r",
+							"    }\r",
+							"    else {\r",
+							"        request_body.charging_profile = input_data_selector(charging_profile)\r",
+							"    }\r",
+							"    // console.log(\"Before delete\",request_body);\r",
+							"    return request_body;\r",
+							"}\r",
+							"\r",
+							"function deleteUndefined(req){\r",
+							"    Object.keys(req).forEach(key => {\r",
+							"        if(req[key] === undefined) {\r",
+							"            delete req[key];\r",
+							"        }\r",
+							"        else if(typeof req[key] === \"object\" && req[key] != null){\r",
+							"            deleteUndefined(req[key])\r",
+							"        }\r",
+							"    });\r",
+							"    return req\r",
+							"}\r",
+							"\r",
+							"//case time_format  //valid for input in AddMins function should is int\r",
+							"function input_time_selector(input){\r",
+							"        if(typeof input === \"number\"){\r",
+							"            input = addMins(input)\r",
+							"        }\r",
+							"        else if(input === \"invalid\"){\r",
+							"            let mins = 7*60000\r",
+							"            const date = new Date()\r",
+							"            input = date.getTime() + mins\r",
+							"        }\r",
+							"        else{\r",
+							"            input = input_data_selector(input)\r",
+							"        }\r",
+							"        return input\r",
+							"}\r",
+							"\r",
+							"// let request_data = deleteUndefined(setRequestData(7709,null,10,25,\"kW\",200.00)) ------ fake data run in funtion directly\r",
+							"let request_data = deleteUndefined(setRequestData(data.station_id,data.charging_profile,data.start_date_time,data.end_date_time,data. charging_rate_unit,data.limit))\r",
+							"\r",
+							"let requestBody_str = JSON.stringify(request_data)\r",
+							"pm.collectionVariables.set(\"stringify_requestBody\", requestBody_str)\r",
+							"\r",
+							"console.log('Test result');"
+						],
+						"type": "text/javascript",
+						"id": "395ff7b1-a05e-42a2-9ff0-bd4e5976cfa0"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "api-key",
+						"value": "{{mea_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{stringify_requestBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{evlp_endpoint}}/api/v1/mea/update-cable-capacity",
+					"host": [
+						"{{evlp_endpoint}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"mea",
+						"update-cable-capacity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "step 2 : get_status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let base_request_body = {\r",
+							"    \"schedule_id\":\"123\"\r",
+							"}\r",
+							"\r",
+							"function input_selector(input_data){\r",
+							"    switch(input_data) {\r",
+							"        case \"null\":\r",
+							"            return null\r",
+							"        case \"sch_id\":\r",
+							"            return pm.collectionVariables.get(\"target_schedule_id\")\r",
+							"        case \"not_sch_id\":\r",
+							"            return 999999999999\r",
+							"        case \"nokey\":\r",
+							"            pm.collectionVariables.unset(\"target_schedule_id\")\r",
+							"            break;\r",
+							"        case \"FALSE\":\r",
+							"            return false\r",
+							"        case \"TRUE\":\r",
+							"            return true\r",
+							"        case \"float\":\r",
+							"            return 9.9\r",
+							"        default:\r",
+							"            return input_data\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"function deleteUndefine(target){\r",
+							"    Object.keys(target).forEach(key => {\r",
+							"        if (target[key] === undefined){ \r",
+							"            delete target[key];\r",
+							"            }\r",
+							"        else if(typeof target[key]  === \"object\" || typeof target[key] === \"array\"){\r",
+							"            deleteUndefine(target[key])\r",
+							"        }\r",
+							"    })\r",
+							"    return target    \r",
+							"}\r",
+							"\r",
+							"function setRequestData(schedule_id){\r",
+							"    pm.collectionVariables.set(\"target_schedule_id\",input_selector(schedule_id))\r",
+							"}\r",
+							"\r",
+							"// function setRequestData(schedule_id) {\r",
+							"//     if(schedule_id === \"nokey\"){\r",
+							"//         pm.collectionVariables.unset(\"target_schedule_id\")\r",
+							"//     }\r",
+							"//     else if (schedule_id === \"not_sch_id\"){\r",
+							"//         pm.collectionVariables.set(\"target_schedule_id\",input_selector(schedule_id))\r",
+							"//     }\r",
+							"//     else if(schedule_id != \"sch_id\"){\r",
+							"//         pm.collectionVariables.set(\"target_schedule_id\",input_selector(schedule_id))\r",
+							"//     }\r",
+							" \r",
+							"// }\r",
+							"// console.log(\"sch_id\",pm.collectionVariables.get(\"schedule_id\"))\r",
+							"console.log(\"get_schedule_id\",pm.collectionVariables.get(\"target_schedule_id\"))\r",
+							"setRequestData(data.schedule_id)\r",
+							"\r",
+							"\r",
+							"console.log(\"\\n\"+\"█████████████ \"+\"Start get_status Case No : \" + data.case_no + \" █████████████\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"id": "7e24a724-74df-446f-b166-35b558ced59b"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData =  JSON.parse(responseBody);\r",
+							"\r",
+							"let passSchema = {\r",
+							"    \"type\":\"object\",\r",
+							"    \"properties\":{\r",
+							"        \"result\":{\"type\": \"string\",\"pattern\":\"^(ADJUSTED|UNKNOWN|REJECTED)$\"}\r",
+							"    },\r",
+							"    \"required\":[\"result\"]\r",
+							"}\r",
+							"\r",
+							"let failSchema = {}\r",
+							"\r",
+							"function logging(){\r",
+							"    console.log(\"request\",request.url)\r",
+							"    console.log(\"expected\",data.expected_get_status_response)\r",
+							"    console.log(\"response\",jsonData)\r",
+							"}\r",
+							"\r",
+							"function schema_checker(name, target, schema) {\r",
+							"    pm.test(name + ' schema is correct', function () {\r",
+							"        pm.expect(target).to.have.jsonSchema(schema); //Ajv JSON schema validator\r",
+							"    });\r",
+							"};\r",
+							"\r",
+							"function verifyContent(){\r",
+							"    if(data.expected_get_status_code === 200){\r",
+							"        schema_checker(data.case_no + \" main get_status success\",jsonData,passSchema)\r",
+							"        tests[\"case_no : \"+ data.case_no + \" Response Code is \" + data.expected_get_status_code] = data.expected_get_status_code === responseCode.code\r",
+							"        tests[\"case_no : \"+ data.case_no + \" Status is \" + data.expected_get_status_response] = data.expected_get_status_response === jsonData.result\r",
+							"        \r",
+							"    }\r",
+							"    else{\r",
+							"        schema_checker(data.case_no + \" main get_status error\",jsonData,failSchema)\r",
+							"        tests[\"case_no : \"+ data.case_no + \" Response Code is \" + data.expected_get_status_code] = data.expected_get_status_code === responseCode.code\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"logging()\r",
+							"verifyContent()\r",
+							"\r",
+							"\r",
+							"console.log(\"\\n\"+\"█████████████ \"+\"End get_status Case No : \" + data.case_no + \" █████████████\")"
+						],
+						"type": "text/javascript",
+						"id": "899d8003-b328-4bbe-b1d6-278a173eba9b"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "api-key",
+						"value": "{{mea_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{evlp_endpoint}}/api/v1/mea/status/{{target_schedule_id}}",
+					"host": [
+						"{{evlp_endpoint}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"mea",
+						"status",
+						"{{target_schedule_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "da42665e-5091-426b-b5b5-63486551ce35"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "ebbabb9a-7d0a-4f76-8801-6806f4ca5c17"
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "4afea9c3-ea0c-4614-bb40-652d12765b8a",
+			"key": "temp_request_body",
+			"value": ""
+		},
+		{
+			"id": "82b5d27e-e990-493a-b0ba-ef4efd9226c4",
+			"key": "schedule_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "869cdae3-a0f7-45fa-ad81-e06b62de34a8",
+			"key": "target_schedule_id",
+			"value": ""
+		},
+		{
+			"id": "c4bd35fc-c4e0-4b29-97be-6821ff27ae66",
+			"key": "stringify_requestBody",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
