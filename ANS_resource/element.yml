@@ -1,0 +1,27 @@
+todolist_page:
+  main_text: 
+    locator: /html/body/div/h1
+  tab_1:
+    locator: /html/body/div/div/div[1]/a[1]
+    textbox:
+      locator: //*[@id="new-task"]
+    add_btn:
+      locator: //*[@id="add-item"]/button
+  tab_2:
+    locator: /html/body/div/div/div[1]/a[2]
+    checkbox:
+      locator: //*[@id="incomplete-tasks"]/li/label/span[4]
+    text_1 :
+      locator: //*[@id="text-1"]
+    del_btn:
+      locator: //*[@id="1"]/span
+  tab_3:
+    locator: /html/body/div/div/div[1]/a[3]
+    done:
+      locator: //*[@id="completed-tasks"]/li/span/i
+    del_btn:
+      locator: //*[@id="1"]/span
+    del_txt:
+      locator: //*[@id="1"]/span
+
+  
